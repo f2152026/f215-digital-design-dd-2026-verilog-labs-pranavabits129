@@ -5,6 +5,7 @@
 // lets you compare rca64.v, cla64_flat.v, and cla64_blocked.v using the
 // exact same testbench and stimulus each time.
 
+// dut.v
 module dut(
   input  [63:0] a,
   input  [63:0] b,
