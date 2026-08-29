@@ -12,16 +12,30 @@
 //
 // Use named port connections (.a(...), .b(...), etc.), not positional.
 
-module ripple_adder(
-  input  [3:0] a,
-  input  [3:0] b,
-  input        cin,
-  output [3:0] sum,
-  output       cout
+// ripple_adder.v
+module ripple_adder #(parameter WIDTH = 4) (
+  input  [WIDTH-1:0] a,
+  input  [WIDTH-1:0] b,
+  input               cin,
+  output [WIDTH-1:0] sum,
+  output              cout
 );
+  wire [WIDTH:0] carry;
+  assign carry[0] = cin;
 
-  wire c1, c2, c3;
+  genvar i;
+  generate
+    for (i = 0; i < WIDTH; i = i + 1) begin : FA_STAGE
+      FA_Gate fa_inst (
+        .a    (a[i]),
+        .b    (b[i]),
+        .cin  (carry[i]),
+        .sum  (sum[i]),
+        .cout (carry[i+1])
+      );
+    end
+  endgenerate
 
-  // TODO: your four FA_Gate instances go here.
+  assign cout = carry[WIDTH];
 
 endmodule
